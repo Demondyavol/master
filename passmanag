@@ -1,0 +1,57 @@
+from __future__ import print_function
+import io
+import random
+import os
+import re
+
+def password_create():
+    y = 0
+    nameSource = str(input('Name source: '))
+    list = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '(', ')', '-', '+','?','!','@','#']
+    password = []
+    while y != 10:
+        y += 1
+        x = random.randint(1,43)
+        password.append(list[x])
+    list2 = ''.join(password)
+    print(f'Password: {list2}')
+    with open('Passmanager.txt','a+',encoding='utf-8') as file:
+        file.write(f'{nameSource} : {list2}\n')
+
+
+def find_pass():
+    x = input('Name of the source: ')
+    with io.open('Passmanager.txt', encoding='utf-8') as file:
+        for i in file:
+            if x in i:
+                print(i)
+
+#def delete_pass():
+    with open('Passmanager.txt') as f:
+        lines = f.readlines()
+
+    str = str(input('Name for delete: '))
+    pattern = re.compile(re.escape(str))
+    with open('f.txt', 'w') as f:
+        for line in lines:
+            result = pattern.search(line)
+            if result is None:
+                f.write(line)
+    os.remove('Passmanager.txt')
+    os.rename('f.txt', 'Passmanager.txt')
+
+def all_information():
+    with open('Passmanager.txt') as f:
+        for i in f:
+            print(i)
+
+while True:
+    number = int(input('Chose: 1 - createpass or 2 - findpass: '))
+    if number == 1:
+        password_create()
+    elif number ==2:
+        find_pass()
+    elif number == 3:
+        all_information()
+    else:
+        break
